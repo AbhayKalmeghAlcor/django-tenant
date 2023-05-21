@@ -94,10 +94,10 @@ DATABASES = {
     'default': {
 
         'ENGINE': 'django_tenants.postgresql_backend',
-        'NAME': 'tenant1',
+        'NAME': 'tenant',
         'USER': 'postgres',
         'PASSWORD': 'Abhay786',
-        'HOST': 'localhost',
+        'HOST': 'database-1.cwtqzvp744yq.us-west-2.rds.amazonaws.com',
         'PORT': '5432',
 
     }
