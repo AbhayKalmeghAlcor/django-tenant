@@ -2,3 +2,4 @@ venv
 *.pyc
 *.xml
 .idea/
+2.7
