@@ -23,6 +23,9 @@ from . import settings, views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('notifications.urls')),
-    path('',views.index)
+    path('', include('homepage.urls')),
+    path('', views.index),
+    path('', include('accounts.urls')),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()

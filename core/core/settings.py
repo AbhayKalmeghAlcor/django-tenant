@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-njh8fj^b+=b6^9_50xa9$z*20ul1b+2*)mv%ga)j!gskrya2@*'
+SECRET_KEY = 'django-insecure-njh8fj^py b+=b6^9_50xa9$z*20ul1b+2*)mv%ga)j!gskrya2@*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -21,16 +21,18 @@ ALLOWED_HOSTS = ['*']
 SHARED_APPS = (
     'django_tenants',  # mandatory
     'client',  # you must list the app where your tenant model resides in
-    'notifications',
-    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'notifications',
+    'rest_framework',
     'accounts',
     'rest_framework_simplejwt',
+    'homepage'
+
 )
 
 TENANT_APPS = (
@@ -45,13 +47,11 @@ TENANT_APPS = (
     'rest_framework',
     'accounts',
     'rest_framework_simplejwt',
-
+    'homepage'
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
-
 TENANT_MODEL = "client.Client"  # app.Model
-
 TENANT_DOMAIN_MODEL = "client.Domain"  # app.Model
 
 MIDDLEWARE = [
@@ -63,7 +63,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -95,10 +94,10 @@ DATABASES = {
     'default': {
 
         'ENGINE': 'django_tenants.postgresql_backend',
-        'NAME': 'tenant',
-        'USER': 'postgres',
-        'PASSWORD': 'Abhay786',
-        'HOST': 'database-1.cwtqzvp744yq.us-west-2.rds.amazonaws.com',
+        'NAME': 'postgres',
+        'USER': 'master',
+        'PASSWORD': '*cAzLT398wD5',
+        'HOST': 'alcor-dev-high5-cloud-postgres-rds.cjlu8mvrnu5r.ap-south-1.rds.amazonaws.com',
         'PORT': '5432',
 
     }

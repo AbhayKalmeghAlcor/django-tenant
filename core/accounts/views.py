@@ -1,30 +1,26 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from .models import Account, UserProfile, Company
+from .models import Account, UserProfile
 from .serializers import UserSerializer, UserSerializerWithToken, UserprofileSerializer, LogoutSerializer, \
     ResetPasswordEmailRequestSerializer, SetNewPasswordSerializer, EmailVerificationSerializer,RegisterSerializer,LoginSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.hashers import make_password
-from .permissions import IsCompanyUser
 from rest_framework import generics, status, permissions, views
 from rest_framework.response import Response
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError
+from django.utils.encoding import smart_str, smart_bytes, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from .utils import Util
-from django.shortcuts import redirect
 from django.http import HttpResponsePermanentRedirect
 import os
-from django.contrib.auth.models import update_last_login
-from django.shortcuts import render
 import jwt
 from django.conf import settings
-from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
-from .renderers import UserRenderer
+# from drf_yasg.utils import swagger_auto_schema
+# from drf_yasg import openapi
+# from rest_framework.renderers import UserRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
@@ -38,7 +34,7 @@ class Accountuser(generics.ListAPIView):
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    permission_classes = [IsCompanyUser]
+    # permission_classes = [IsCompanyUser]
 
     def validate(self, attrs):
         data = super().validate(attrs)
@@ -147,7 +143,7 @@ def deleteUser(request, pk):
 
 class RegisterView(generics.GenericAPIView):
     serializer_class = RegisterSerializer
-    renderer_classes = (UserRenderer,)
+    #renderer_classes = (UserRenderer,)
 
     def post(self, request):
         user = request.data
@@ -172,10 +168,10 @@ class RegisterView(generics.GenericAPIView):
 class VerifyEmail(views.APIView):
     serializer_class = EmailVerificationSerializer
 
-    token_param_config = openapi.Parameter(
-        'token', in_=openapi.IN_QUERY, description='Description', type=openapi.TYPE_STRING)
-
-    @swagger_auto_schema(manual_parameters=[token_param_config])
+    # token_param_config = openapi.Parameter(
+    #     'token', in_=openapi.IN_QUERY, description='Description', type=openapi.TYPE_STRING)
+    #
+    # @swagger_auto_schema(manual_parameters=[token_param_config])
     def get(self, request):
         token = request.GET.get('token')
         try:
@@ -226,7 +222,9 @@ class RequestPasswordResetEmail(generics.GenericAPIView):
             data = {'email_body': email_body, 'to_email': user.email,
                     'email_subject': 'Reset your passsword'}
             Util.send_email(data)
-        return Response({'success': 'We have sent you a link to reset your password'}, status=status.HTTP_200_OK)
+            return Response({'success': 'We have sent you a link to reset your password'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'unsuccessful': 'User Not Found'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class PasswordTokenCheckAPI(generics.GenericAPIView):
