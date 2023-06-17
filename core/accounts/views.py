@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from .models import Account, UserProfile
-from .serializers import UserSerializer, UserSerializerWithToken, UserprofileSerializer, LogoutSerializer, \
+from .models import Account
+from .serializers import UserSerializer, UserSerializerWithToken, AccountSerializer, LogoutSerializer, \
     ResetPasswordEmailRequestSerializer, SetNewPasswordSerializer, EmailVerificationSerializer,RegisterSerializer,LoginSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -20,7 +20,7 @@ import jwt
 from django.conf import settings
 # from drf_yasg.utils import swagger_auto_schema
 # from drf_yasg import openapi
-# from rest_framework.renderers import UserRenderer
+from .renderers import UserRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
@@ -29,8 +29,8 @@ class CustomRedirect(HttpResponsePermanentRedirect):
 
 
 class Accountuser(generics.ListAPIView):
-    queryset = UserProfile.objects.all()
-    serializer_class = UserprofileSerializer
+    queryset = Account.objects.all()
+    serializer_class = AccountSerializer
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -55,7 +55,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
         return response
 
     def create(self, validated_data):
-        return UserProfile.objects.create(**validated_data)
+        return Account.objects.create(**validated_data)
 
 
 @api_view(['POST'])

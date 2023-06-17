@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 import uuid
 
+
 class MyAccountManager(BaseUserManager):
     def create_user(self, first_name, last_name, username, email, password=None):
         if not email:
@@ -37,12 +38,32 @@ class MyAccountManager(BaseUserManager):
 
 
 class Account(AbstractUser):
-    sys_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     first_name = models.CharField(max_length=100, null=True, default=None)
     last_name = models.CharField(max_length=100, null=True)
     username = models.CharField(max_length=100, unique=True)
     email = models.EmailField(max_length=100, unique=True)
     phone_number = models.CharField(max_length=15, null=True)
+    manager_email = models.EmailField(null=True)
+    hire_date = models.DateField(null=True)
+    birth_date = models.DateField(null=True)
+    country = models.CharField(max_length=100, null=True)
+    department = models.CharField(max_length=200, null=True)
+    location = models.CharField(max_length=200, null=True)
+    role = models.CharField(max_length=200, null=True)
+    avtar = models.ImageField(upload_to='photos/users', blank=True)
+    user_mode = models.CharField(max_length=20, default='normal', null=True)
+    created_by = models.CharField(max_length=100, default='admin', null=True)
+    updated_by = models.CharField(max_length=100, default='admin', null=True)
+    allowance_boost = models.IntegerField(default=200)
+    points_available = models.IntegerField(default=0)  # under select points section, point given by company. CJ run
+    points_received = models.IntegerField(default=0)  # part of 390 in design
+    points_redeemed = models.IntegerField(default=0)
+    achievements_notification = models.DateTimeField(auto_now=True)
+    activity_update_notification = models.DateTimeField(auto_now=True)
+    allowance_notification = models.DateTimeField(auto_now=True)
+    bonus_notification = models.DateTimeField(auto_now=True)
+    comments_notification = models.DateTimeField(auto_now=True)
 
     # Required
     created_date = models.DateTimeField(auto_now=True)
@@ -73,37 +94,37 @@ class Account(AbstractUser):
         return True
 
 
-class Company(models.Model):
-    name = models.CharField(max_length=255, null=True, default='Alcor')
-    company_type = models.CharField(max_length=255, null=True)
-    description = models.TextField(default='', null=True)
-    created_date = models.DateTimeField(auto_now=True)
-    created_user = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
+# class Company(models.Model):
+#     name = models.CharField(max_length=255, null=True, default='Alcor')
+#     company_type = models.CharField(max_length=255, null=True)
+#     description = models.TextField(default='', null=True)
+#     created_date = models.DateTimeField(auto_now=True)
+#     created_user = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
+#
+#     class Meta:
+#         verbose_name = 'company'
+#         verbose_name_plural = 'companies'
+#
+#     def __str__(self):
+#         return self.name
 
-    class Meta:
-        verbose_name = 'company'
-        verbose_name_plural = 'companies'
 
-    def __str__(self):
-        return self.name
-
-
-class UserProfile(models.Model):
-    user = models.OneToOneField(Account, on_delete=models.CASCADE, default=1)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    manager_email = models.EmailField(null=False, default='')
-    hire_date = models.DateField()
-    birth_date = models.DateField()
-    country = models.CharField(max_length=100, null=True)
-    department = models.CharField(max_length=200)
-    location = models.CharField(max_length=200, null=True)
-    role = models.CharField(max_length=200, null=True)
-    avtar = models.ImageField(upload_to='photos/users', blank=True)
-    allowance_boost = models.IntegerField(default=200)
-    user_mode = models.CharField(max_length=20, default='normal')
-    created_by = models.CharField(max_length=100, default='admin')
-    # update_date = models.DateTimeField(auto_now=True)
-    updated_by = models.CharField(max_length=100, default='admin')
-
-    def __str__(self):
-        return "%s %s" % (self.user.first_name, self.user.last_name)
+# class UserProfile(models.Model):
+#     user = models.OneToOneField(Account, on_delete=models.CASCADE, default=1)
+#     company = models.ForeignKey(Company, on_delete=models.CASCADE)
+#     manager_email = models.EmailField(null=False, default='')
+#     hire_date = models.DateField()
+#     birth_date = models.DateField()
+#     country = models.CharField(max_length=100, null=True)
+#     department = models.CharField(max_length=200)
+#     location = models.CharField(max_length=200, null=True)
+#     role = models.CharField(max_length=200, null=True)
+#     avtar = models.ImageField(upload_to='photos/users', blank=True)
+#     allowance_boost = models.IntegerField(default=200)
+#     user_mode = models.CharField(max_length=20, default='normal')
+#     created_by = models.CharField(max_length=100, default='admin')
+#     # update_date = models.DateTimeField(auto_now=True)
+#     updated_by = models.CharField(max_length=100, default='admin')
+#
+#     def __str__(self):
+#         return "%s %s" % (self.user.first_name, self.user.last_name)

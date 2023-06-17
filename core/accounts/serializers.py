@@ -1,4 +1,4 @@
-from .models import Account, UserProfile, Company
+from .models import Account
 from rest_framework import serializers
 from django.contrib import auth
 from rest_framework.exceptions import AuthenticationFailed
@@ -45,38 +45,32 @@ class UserSerializerWithToken(UserSerializer):
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
-        fields = ['id', 'first_name', 'last_name', 'email', 'phone_number', 'is_admin']
+        fields = '__all__'
 
 
-class CompanySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Company
-        fields = ['id', 'name', 'company_type', 'description', 'created_date', 'created_user']
+# class UserprofileSerializer(serializers.ModelSerializer):
+#     user = AccountSerializer()
+#     company = CompanySerializer()
+#
+#     class Meta:
+#         model = UserProfile
+#         fields = (
+#             'id', 'manager_email', 'hire_date', 'birth_date', 'country', 'department', 'location', 'role', 'avtar',
+#             'allowance_boost', 'user_mode', 'user', 'company')
+#
+#     def get_account_data(self, obj):
+#         userprofile_serializer = AccountSerializer(obj.user)
+#         return userprofile_serializer.data
+#
+#     def get_company_data(self, obj):
+#         company_serializer = CompanySerializer(obj.company)
+#         return company_serializer.data
 
-
-class UserprofileSerializer(serializers.ModelSerializer):
-    user = AccountSerializer()
-    company = CompanySerializer()
-
-    class Meta:
-        model = UserProfile
-        fields = (
-            'id', 'manager_email', 'hire_date', 'birth_date', 'country', 'department', 'location', 'role', 'avtar',
-            'allowance_boost', 'user_mode', 'user', 'company')
-
-    def get_account_data(self, obj):
-        userprofile_serializer = AccountSerializer(obj.user)
-        return userprofile_serializer.data
-
-    def get_company_data(self, obj):
-        company_serializer = CompanySerializer(obj.company)
-        return company_serializer.data
-
-    # def create(self, validated_data):
-    #     user = UserProfile.objects.create(**validated_data)
-    #     user.set_password(validated_data['password'])
-    #     user.save()
-    #     return user
+# def create(self, validated_data):
+#     user = UserProfile.objects.create(**validated_data)
+#     user.set_password(validated_data['password'])
+#     user.save()
+#     return user
 
 
 class RegisterSerializer(serializers.ModelSerializer):
