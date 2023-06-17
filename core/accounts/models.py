@@ -51,7 +51,7 @@ class Account(AbstractUser):
     department = models.CharField(max_length=200, null=True)
     location = models.CharField(max_length=200, null=True)
     role = models.CharField(max_length=200, null=True)
-    avtar = models.ImageField(upload_to='photos/users', blank=True)
+    avtar = models.ImageField(upload_to='photos/users', blank=True, null=True)
     user_mode = models.CharField(max_length=20, default='normal', null=True)
     created_by = models.CharField(max_length=100, default='admin', null=True)
     updated_by = models.CharField(max_length=100, default='admin', null=True)

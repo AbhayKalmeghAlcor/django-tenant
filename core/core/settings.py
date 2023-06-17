@@ -100,6 +100,13 @@ DATABASES = {
         'HOST': 'alcor-dev-high5-cloud-postgres-rds.cjlu8mvrnu5r.ap-south-1.rds.amazonaws.com',
         'PORT': '5432',
 
+        # 'ENGINE': 'django_tenants.postgresql_backend',
+        # 'NAME': 'test1',
+        # 'USER': 'postgres',
+        # 'PASSWORD': 'Abhay786',
+        # 'HOST': 'localhost',
+        # 'PORT': '5432',
+
     }
 }
 
