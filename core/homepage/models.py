@@ -32,7 +32,7 @@ class Posts(models.Model):
     active = models.BooleanField(default=True)
     flag_transaction = models.BooleanField(default=False)
     created = models.DateField(auto_created=True)
-    react_by = models.JSONField(default=dict)
+    react_by = models.JSONField(default=dict, null=True)
     created_by = models.ForeignKey(Account, on_delete=models.CASCADE)
     updated = models.DateField(auto_created=True)
     # updated_by = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
